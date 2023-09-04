@@ -1,23 +1,27 @@
-import Itinerary from "../../models/Itineray.js";
+import Itinerary from '../../models/Itinerary.js'
 
-export default async (req, res, next) => {
+export default async (req,res,next)=> {
     try {
-        let allItinerary = await Itinerary.find()
-
-        if (allItinerary.length > 0){
-            return res.status(200).json({
-                success: true,
-                message: 'itineraries found',
-                response: allItinerary
-            })
-        } else {
-            return res.status(404).json({
-                success: false,
-                message: 'not found',
-                response: null
-            })
+        let queries = {}
+        if (req.query.city_id) {
+            queries.city_id = req.query.city_id
         }
+        let all = await Itinerary
+            .find(queries,'-__v -createdAt -updatedAt')
+            .populate({
+                path: "city_id",
+                select: "city photo admin_id",
+                populate: {
+                    path: "admin_id",
+                    select: "name photo"
+                }
+            })
+        return res.status(200).json({
+            success: true,
+            message: 'itineraries found',
+            response: all
+        })
     } catch (error) {
-        next(error);
+        next(error)
     }
 }

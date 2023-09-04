@@ -8,9 +8,9 @@ let schema = new Schema({
     population: {type: Number},
     photo: {type:String, required: true},
     city: {type:String, required: true},
-    description: {type: String, default: 'edit later'},
-    smalldescription: {type: String, default:'edit later'},
-    featureLocation: {type: String, default:'edit later'},
+    description: {type: String, default: 'edit'},
+    smalldescription: {type: String, default:'edit'},
+    featureLocation: {type: String, default:'edit'},
     admin_id:{type: Types.ObjectId, required:true, ref: 'users'}
 }, {
     timestamps: true,
